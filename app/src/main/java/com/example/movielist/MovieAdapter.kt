@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 class MovieAdapter(private val movieList: ArrayList<Movie>) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
-    // ViewHolder class
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var titleTextView: TextView
         var yearTextView: TextView
@@ -27,14 +26,13 @@ class MovieAdapter(private val movieList: ArrayList<Movie>) :
         }
     }
 
-    // Create ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.movie_item, parent, false)
         return MovieViewHolder(itemView)
     }
 
-    // Bind data to ViewHolder
+
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentMovie = movieList[position]
         holder.titleTextView.text = currentMovie.title
@@ -43,18 +41,16 @@ class MovieAdapter(private val movieList: ArrayList<Movie>) :
         holder.ratingTextView.text = "Rating: ${currentMovie.rating}"
     }
 
-    // Get item count
+
     override fun getItemCount(): Int {
         return movieList.size
     }
 
-    // Function to remove item
     fun removeItem(position: Int) {
         movieList.removeAt(position)
         notifyItemRemoved(position)
     }
 
-    // Swipe to delete callback
     inner class SwipeToDeleteCallback :
         ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
         override fun onMove(
@@ -85,6 +81,5 @@ class MovieAdapter(private val movieList: ArrayList<Movie>) :
         }
     }
 
-    // added to enable swipe delete
     val swipeToDeleteCallback = SwipeToDeleteCallback()
 }

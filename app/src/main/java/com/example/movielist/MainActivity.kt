@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Debug: Log the start of onCreate
         Log.d("MOVIELIST", "onCreate started")
 
         // Setup RecyclerView
@@ -38,18 +37,14 @@ class MainActivity : AppCompatActivity() {
         movieAdapter = MovieAdapter(movieList)
         recyclerView.adapter = movieAdapter
 
-        // Setup file directory
         myPlace = this.filesDir
         Log.d("MOVIELIST", "File directory: ${myPlace.absolutePath}")
 
-        // Read the initial file
         readFile()
 
-        // Add swipe to delete
         val itemTouchHelper = ItemTouchHelper(movieAdapter.swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
-        // Setup button click listeners
         val addButton = findViewById<Button>(R.id.addMovieButton)
         val saveButton = findViewById<Button>(R.id.saveListButton)
         val sortButton = findViewById<ImageButton>(R.id.sortButton)
@@ -95,7 +90,6 @@ class MainActivity : AppCompatActivity() {
         popup.show()
     }
 
-    // Function to read the file
     private fun readFile() {
         try {
             val file = File(myPlace, "MOVIELIST.csv")
@@ -125,7 +119,6 @@ class MainActivity : AppCompatActivity() {
                 bufferedReader.close()
                 movieAdapter.notifyDataSetChanged()
             } else {
-                // Add fallback data if file doesn't exist
                 Log.d("MOVIELIST", "File doesn't exist, adding sample data")
                 movieList.add(Movie("The Godfather", "1972", "Crime", "9.2"))
                 movieList.add(Movie("The Dark Knight", "2008", "Action", "9.0"))
@@ -136,7 +129,6 @@ class MainActivity : AppCompatActivity() {
             Log.e("MOVIELIST", "Error reading file: ${e.message}")
             e.printStackTrace()
 
-            // Add fallback data if there's an error
             movieList.add(Movie("The Godfather", "1972", "Crime", "9.2"))
             movieList.add(Movie("The Dark Knight", "2008", "Action", "9.0"))
             movieList.add(Movie("The Matrix", "1999", "Science Fiction", "8.7"))
@@ -165,20 +157,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Function called when SAVE LIST button is clicked
     private fun saveList() {
         Log.d("MOVIELIST", "saveList() called")
         writeFile()
     }
 
-    // Function to launch second activity
     private fun startSecond() {
         Log.d("MOVIELIST", "startSecond() called")
         val intent = Intent(this, AddMovieActivity::class.java)
         startForResult.launch(intent)
     }
 
-    // ActivityResultLauncher for getting data back from second activity
     private val startForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
